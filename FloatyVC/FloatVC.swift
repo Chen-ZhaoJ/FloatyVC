@@ -1,0 +1,240 @@
+//
+//  ViewController.swift
+//  FloatyVC
+//
+//  Created by Zhaojie CHEN(陳昭潔) on 2022/8/19.
+//
+
+import UIKit
+
+final class FloatVC: UIViewController{
+    enum FabDirection {
+        case left
+        case right
+    }
+    struct viewModel{
+        var fabDirection: FabDirection = .left
+        var viewLeading: CGFloat = 35 //relate to self
+        var viewBottom: CGFloat = -40 //relate to self
+        var buttonSize: CGFloat = 50
+        var fabExpandColor: UIColor = UIColor.black
+        var fabCollapseColor: UIColor = UIColor.yellow
+        var lblTextSize: Double = 20
+        var lblTextColor: UIColor = UIColor.systemYellow
+        var maskAlpha: CGFloat = 0.5
+        var maskColor: UIColor = UIColor.black
+        var rotateExpandDuration: Double = 0.3
+        var rotateCollapseDuration: Double = 0.3
+        var positionExpandDuration: Double = 0.3
+        var positionCollapseDuration: Double = 0.3
+        var IntervalOfButtons: CGFloat = 5
+    }
+
+    private var vm = viewModel()
+    private var collapseImage: UIImage = UIImage()
+    private var expandImage: UIImage = UIImage()
+    private var isExpand: Bool = false
+    private var views: [UIView] = []
+    private var btns: [UIButton] = []
+    private var lbls: [UILabel] = []
+    private var bottomAnchors: [NSLayoutConstraint] = []
+    private let customMaskView: UIView = UIView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .clear
+    }
+    
+    func createTopButton(initVM: viewModel, collapse: UIImage, expand: UIImage, target: Selector? = nil, atVC: Any? = nil){
+        vm.fabDirection = initVM.fabDirection
+        vm.viewLeading = initVM.viewLeading
+        vm.viewBottom = initVM.viewBottom
+        vm.buttonSize = initVM.buttonSize
+        vm.fabExpandColor = initVM.fabExpandColor
+        vm.fabCollapseColor = initVM.fabCollapseColor
+        vm.lblTextSize = initVM.lblTextSize
+        vm.lblTextColor = initVM.lblTextColor
+        vm.maskAlpha = initVM.maskAlpha
+        vm.maskColor = initVM.maskColor
+        vm.rotateExpandDuration = initVM.rotateExpandDuration
+        vm.rotateCollapseDuration = initVM.rotateCollapseDuration
+        vm.IntervalOfButtons = initVM.IntervalOfButtons
+        
+        createView(index: 0)
+        createLabel(index: 0, title: "")
+        createButton(image: collapse, index: 0, target: target, atVC: atVC)
+        btns[0].addTarget(self, action: #selector(clickFAB(_:)), for: UIControl.Event.touchUpInside)
+        initialMask()
+        collapseImage = collapse
+        expandImage = expand
+    }
+    
+    func createOtherButton(image: UIImage, title: String, target: Selector? = nil, atVC: Any? = nil){
+        guard views.count>0 else {
+            print("you must createTopButton first")
+            return
+        }
+        let index = views.count
+        createView(index: index)
+        createLabel(index: index, title: title)
+        createButton(image: image, index: index, target: target, atVC: atVC)
+    }
+        
+    func collapseFAB(){
+        guard isExpand == true else { return }
+        clickFAB(btns[0])
+    }
+    
+    private func createView(index: Int){
+        let myView: UIView = UIView()
+        views.insert(myView, at: index)
+        
+
+        if index != 0 {
+            view.insertSubview(views[index], belowSubview: views[index-1])
+        }else{
+            view.insertSubview(views[index], at: 1)
+        }
+        views[index].translatesAutoresizingMaskIntoConstraints = false
+        let bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
+        bottomAnchors.insert(bottomConstraint, at: index)
+        bottomAnchors[index] = views[index].bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: vm.viewBottom)
+        NSLayoutConstraint.activate([views[index].widthAnchor.constraint(equalTo: view.widthAnchor, constant: -vm.viewLeading*2),
+                                     views[index].heightAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     views[index].leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: vm.viewLeading),
+                                     bottomAnchors[index]])
+    }
+    
+    private func createButton(image: UIImage, index: Int, target: Selector?, atVC: Any?){
+        let button: UIButton = UIButton()
+        btns.insert(button, at: index)
+        btns[index].setImage(image, for: .normal)
+        btns[index].layer.cornerRadius = 25
+        btns[index].backgroundColor = vm.fabCollapseColor
+        
+        views[index].addSubview(btns[index])
+        btns[index].translatesAutoresizingMaskIntoConstraints = false
+        var lead: CGFloat = 0
+        if vm.fabDirection == .left{
+            lead = 0
+        }else{
+            lead = UIScreen.main.bounds.size.width-vm.viewLeading*2-vm.buttonSize
+        }
+        NSLayoutConstraint.activate([btns[index].widthAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     btns[index].heightAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     btns[index].leadingAnchor.constraint(equalTo: views[index].leadingAnchor, constant: lead),
+                                     btns[index].bottomAnchor.constraint(equalTo: views[index].bottomAnchor, constant: 0)])
+        
+        guard target != nil else { return }
+        btns[index].addTarget(atVC, action: target ?? Selector(String()), for: UIControl.Event.touchUpInside)
+    }
+    
+    private func createLabel(index: Int, title: String){
+        let label: UILabel = UILabel()
+        lbls.insert(label, at: index)
+        lbls[index].text = title
+        lbls[index].textColor = vm.lblTextColor
+        lbls[index].font = UIFont.systemFont(ofSize: vm.lblTextSize)
+        lbls[index].isHidden = true
+        
+        views[index].addSubview(lbls[index])
+        lbls[index].translatesAutoresizingMaskIntoConstraints = false
+        var lblLeading: CGFloat = 55
+        if vm.fabDirection == .left{
+            lblLeading = vm.buttonSize+5
+            lbls[index].textAlignment = .left
+        }else{
+            lblLeading = -5
+            lbls[index].textAlignment = .right
+        }
+        NSLayoutConstraint.activate([lbls[index].centerYAnchor.constraint(equalTo: views[index].centerYAnchor, constant: 0),
+                                     lbls[index].widthAnchor.constraint(equalTo: views[index].widthAnchor, constant: -vm.buttonSize),
+                                     lbls[index].leadingAnchor.constraint(equalTo: views[index].leadingAnchor, constant: lblLeading)])
+    }
+    
+    @IBAction private func clickFAB (_ sender: UIButton){
+        if sender.isSelected == false && sender == btns[0] { //即將展開
+            customMaskView.isHidden=false //顯示customMaskView
+            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: 1, btn:btns[0]) //順時針轉
+            btns[0].setImage(expandImage, for: .normal) //按鈕樣式改展開時
+            btns[0].backgroundColor = vm.fabExpandColor
+
+            for i in 1 ..< views.count{ //顯示字、把button展開
+                lbls[i].isHidden = false
+                bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)
+                let from = [views[0].frame.midX,views[0].frame.midY]
+                let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
+                animationPosition(duration: vm.positionExpandDuration, fromValue: from, toValue: to, index: i)
+            }
+        }else{ //即將收回
+            btns[0].setImage(collapseImage, for: .normal) //按鈕樣式改收回時
+            btns[0].backgroundColor = vm.fabCollapseColor
+            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: -1, btn:btns[0]) //逆時針轉
+            customMaskView.isHidden=true //隱藏customMaskView
+
+            for i in 1 ..< views.count{ //把button收回、隱藏字
+                bottomAnchors[i].constant = vm.viewBottom
+                let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
+                let to = [views[0].frame.midX,views[0].frame.midY]
+                animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
+                lbls[i].isHidden = true
+            }
+        }
+        btns[0].isSelected = !btns[0].isSelected //切換FAB的選中狀態
+        isExpand = !isExpand
+    }
+    
+    private func initialMask(){
+        //style
+        customMaskView.backgroundColor = vm.maskColor.withAlphaComponent(vm.maskAlpha)
+        customMaskView.isHidden = true
+
+        //layout
+        view.insertSubview(customMaskView, at: 0)
+        customMaskView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([customMaskView.widthAnchor.constraint(equalTo: view.widthAnchor),
+                                     customMaskView.heightAnchor.constraint(equalTo: view.heightAnchor),
+                                     customMaskView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                     customMaskView.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
+    }
+    
+    private func animationRotate(duration: Double, toValue: Double, repeatCount: Float, btn: UIButton){ //旋轉動畫
+        let animRotate = CABasicAnimation(keyPath: "transform.rotation")
+        animRotate.duration = duration //動畫速度
+        animRotate.isRemovedOnCompletion = false //結束時不回復原樣
+        animRotate.fillMode = CAMediaTimingFillMode.forwards //讓layer停在toValue
+        animRotate.toValue = toValue //設定動畫結束值
+        animRotate.repeatCount = repeatCount //旋轉次數（正1為順時針一圈，負為逆時針）
+        btn.imageView?.layer.add(animRotate, forKey: nil)
+    }
+    
+    private func animationPosition(duration: Double, fromValue: [CGFloat], toValue: [CGFloat], index: Int){ //位移動畫
+        let animPosition = CABasicAnimation(keyPath: "position")
+        animPosition.duration = duration
+        animPosition.isRemovedOnCompletion = false
+        animPosition.fillMode = CAMediaTimingFillMode.forwards
+        animPosition.fromValue = fromValue
+        animPosition.toValue = toValue
+        views[index].layer.add(animPosition, forKey: nil)
+    }
+        
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self.view) else { return }
+        guard !btns[0].frame.contains(location) && isExpand == true else { return } //位置不在FAB且FAB為展開時
+        clickFAB(btns[0])
+    }
+    
+    func setupUI(initVM: viewModel){
+        vm.fabDirection = initVM.fabDirection
+        vm.viewLeading = initVM.viewLeading
+        vm.viewBottom = initVM.viewBottom
+        vm.buttonSize = initVM.buttonSize
+        vm.lblTextSize = initVM.lblTextSize
+        vm.lblTextColor = initVM.lblTextColor
+        vm.maskAlpha = initVM.maskAlpha
+        vm.maskColor = initVM.maskColor
+        vm.rotateExpandDuration = initVM.rotateExpandDuration
+        vm.rotateCollapseDuration = initVM.rotateCollapseDuration
+        vm.IntervalOfButtons = initVM.IntervalOfButtons
+    }
+}

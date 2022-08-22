@@ -73,6 +73,10 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     }
     
     func createOtherButton(image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
+        guard views.count>0 else {
+            print("must createTopButton first")
+            return
+        }
         let index = views.count
         createView(index: index)
         createLabel(index: index, title: title ?? "")

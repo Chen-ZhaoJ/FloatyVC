@@ -11,7 +11,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     let floatVC = FloatVC()
     let vc2 = ViewController2()
     let viewModel = FloatVC.viewModel(
-        fabDirection: .left,
+        fabDirection: .right,
         btnLeftOrRightSpace: 40,
         btnBottom: -50
     )
@@ -44,7 +44,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([button.widthAnchor.constraint(equalToConstant: viewModel.buttonSize),
                                      button.heightAnchor.constraint(equalToConstant: viewModel.buttonSize),
-                                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
                                      button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)])
     }
     

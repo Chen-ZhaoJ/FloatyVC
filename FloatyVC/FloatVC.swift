@@ -35,20 +35,6 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     private var bottomAnchors: [NSLayoutConstraint] = []
     private let customMaskView: UIView = UIView()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = .clear
-        initialMask()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        guard btns.count > 0 else {
-            print("must add button on FloatVC first")
-            return
-        }
-        expand()
-    }
-    
     func createCloseButton(initVM: viewModel, image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
         guard views.count == 0 else {
             print("add another TopButton: Initialize another FloatVC with a different variable name")
@@ -166,6 +152,40 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
                                      customMaskView.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
     }
     
+    @objc private func expand(){
+        if vm.fabDirection == .left {
+            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: 0.5, btn:btns[0]) //順時針轉
+        }else{
+            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: -0.5, btn:btns[0]) //順時針轉
+        }
+        
+        for i in 1 ..< views.count{ //顯示字、把button展開
+            lbls[i].isHidden = false
+            bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)
+            let from = [views[0].frame.midX,views[0].frame.midY]
+            let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
+            animationPosition(duration: vm.positionExpandDuration, fromValue: from, toValue: to, index: i)
+        }
+        isExpand = !isExpand
+    }
+    
+    @objc private func collapse(){
+        if vm.fabDirection == .left {
+            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: -0.5, btn:btns[0]) //逆時針轉
+        }else{
+            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: 0.5, btn:btns[0]) //逆時針轉
+        }
+        
+        for i in 1 ..< views.count{ //把button收回、隱藏字
+            bottomAnchors[i].constant = vm.btnBottom
+            let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
+            let to = [views[0].frame.midX,views[0].frame.midY]
+            animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
+            lbls[i].isHidden = true
+        }
+        isExpand = !isExpand
+    }
+    
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if isExpand == false {
             self.dismiss(animated: false)
@@ -199,37 +219,17 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         collapse()
     }
     
-    @objc private func expand(){
-        if vm.fabDirection == .left {
-            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: 0.5, btn:btns[0]) //順時針轉
-        }else{
-            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: -0.5, btn:btns[0]) //順時針轉
-        }
-        
-        for i in 1 ..< views.count{ //顯示字、把button展開
-            lbls[i].isHidden = false
-            bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)
-            let from = [views[0].frame.midX,views[0].frame.midY]
-            let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
-            animationPosition(duration: vm.positionExpandDuration, fromValue: from, toValue: to, index: i)
-        }
-        isExpand = !isExpand
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .clear
+        initialMask()
     }
     
-    @objc private func collapse(){
-        if vm.fabDirection == .left {
-            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: -0.5, btn:btns[0]) //逆時針轉
-        }else{
-            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: 0.5, btn:btns[0]) //逆時針轉
+    override func viewDidAppear(_ animated: Bool) {
+        guard btns.count > 0 else {
+            print("must add button on FloatVC first")
+            return
         }
-        
-        for i in 1 ..< views.count{ //把button收回、隱藏字
-            bottomAnchors[i].constant = vm.btnBottom
-            let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
-            let to = [views[0].frame.midX,views[0].frame.midY]
-            animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
-            lbls[i].isHidden = true
-        }
-        isExpand = !isExpand
+        expand()
     }
 }

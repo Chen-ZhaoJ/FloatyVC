@@ -32,7 +32,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
         btn.layer.cornerRadius = 25
         btn.backgroundColor = .black
         btn.setTitleColor(UIColor.white, for: .normal)
-        btn.addTarget(self, action: #selector(show(_:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(showFloatVC(_:)), for: .touchUpInside)
         return btn
     }()
     
@@ -47,7 +47,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
 }
 
 extension ViewController {
-    @IBAction func show(_ sender: UIButton){
+    @IBAction func showFloatVC(_ sender: UIButton){
         floatVC.modalPresentationStyle = .overFullScreen
         present(floatVC, animated: false)
     }

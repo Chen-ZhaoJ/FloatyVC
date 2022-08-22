@@ -16,8 +16,8 @@
 		DC188E6928AF39C10054198B /* FloatyVCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E6828AF39C10054198B /* FloatyVCTests.swift */; };
 		DC188E7328AF39C10054198B /* FloatyVCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E7228AF39C10054198B /* FloatyVCUITests.swift */; };
 		DC188E7528AF39C10054198B /* FloatyVCUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E7428AF39C10054198B /* FloatyVCUITestsLaunchTests.swift */; };
-		DC188E8228AF3A7C0054198B /* FABView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E8128AF3A7C0054198B /* FABView.swift */; };
 		DC188E8628AF71730054198B /* FloatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E8528AF71730054198B /* FloatVC.swift */; };
+		DC188E8828AF89D20054198B /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E8728AF89D20054198B /* Images.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,8 +51,8 @@
 		DC188E6E28AF39C10054198B /* FloatyVCUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FloatyVCUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC188E7228AF39C10054198B /* FloatyVCUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyVCUITests.swift; sourceTree = "<group>"; };
 		DC188E7428AF39C10054198B /* FloatyVCUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyVCUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		DC188E8128AF3A7C0054198B /* FABView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FABView.swift; sourceTree = "<group>"; };
 		DC188E8528AF71730054198B /* FloatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatVC.swift; sourceTree = "<group>"; };
+		DC188E8728AF89D20054198B /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,11 +107,11 @@
 				DC188E5328AF39BF0054198B /* SceneDelegate.swift */,
 				DC188E5528AF39BF0054198B /* ViewController.swift */,
 				DC188E8528AF71730054198B /* FloatVC.swift */,
-				DC188E8128AF3A7C0054198B /* FABView.swift */,
 				DC188E5728AF39BF0054198B /* Main.storyboard */,
 				DC188E5A28AF39C10054198B /* Assets.xcassets */,
 				DC188E5C28AF39C10054198B /* LaunchScreen.storyboard */,
 				DC188E5F28AF39C10054198B /* Info.plist */,
+				DC188E8728AF89D20054198B /* Images.swift */,
 			);
 			path = FloatyVC;
 			sourceTree = "<group>";
@@ -264,9 +264,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC188E8228AF3A7C0054198B /* FABView.swift in Sources */,
 				DC188E5628AF39BF0054198B /* ViewController.swift in Sources */,
 				DC188E5228AF39BF0054198B /* AppDelegate.swift in Sources */,
+				DC188E8828AF89D20054198B /* Images.swift in Sources */,
 				DC188E8628AF71730054198B /* FloatVC.swift in Sources */,
 				DC188E5428AF39BF0054198B /* SceneDelegate.swift in Sources */,
 			);

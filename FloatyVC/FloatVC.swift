@@ -139,6 +139,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         lbls[index].text = title
         lbls[index].textColor = vm.lblTextColor
         lbls[index].font = UIFont.systemFont(ofSize: vm.lblTextSize)
+        lbls[index].isHidden = true
         
         views[index].addSubview(lbls[index])
         lbls[index].translatesAutoresizingMaskIntoConstraints = false
@@ -206,6 +207,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         }
         
         for i in 1 ..< views.count{ //顯示字、把button展開
+            lbls[i].isHidden = false
             bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)
             let from = [views[0].frame.midX,views[0].frame.midY]
             let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
@@ -226,6 +228,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
             let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
             let to = [views[0].frame.midX,views[0].frame.midY]
             animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
+            lbls[i].isHidden = true
         }
         isExpand = !isExpand
     }

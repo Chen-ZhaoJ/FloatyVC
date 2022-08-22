@@ -14,8 +14,8 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     }
     struct viewModel{
         var fabDirection: FabDirection = .left
-        var viewLeading: CGFloat = 35 //relate to self
-        var viewBottom: CGFloat = -40 //relate to self
+        var btnLeftOrRightSpace: CGFloat = 0
+        var btnBottom: CGFloat = 0
         var buttonSize: CGFloat = 50
         var lblTextSize: Double = 20
         var lblTextColor: UIColor = UIColor.systemYellow
@@ -56,8 +56,8 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
             return
         }
         vm.fabDirection = initVM.fabDirection
-        vm.viewLeading = initVM.viewLeading
-        vm.viewBottom = initVM.viewBottom
+        vm.btnLeftOrRightSpace = initVM.btnLeftOrRightSpace
+        vm.btnBottom = initVM.btnBottom
         vm.buttonSize = initVM.buttonSize
         vm.lblTextSize = initVM.lblTextSize
         vm.lblTextColor = initVM.lblTextColor
@@ -88,14 +88,6 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         collapse()
     }
     
-    func getRightLead()->CGFloat{
-        return UIScreen.main.bounds.size.width-vm.viewLeading-vm.buttonSize
-    }
-    
-    func getLeftLead()->CGFloat{
-        return vm.viewLeading
-    }
-    
     private func createView(index: Int){
         let myView: UIView = UIView()
         views.insert(myView, at: index)
@@ -108,10 +100,10 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         views[index].translatesAutoresizingMaskIntoConstraints = false
         let bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
         bottomAnchors.insert(bottomConstraint, at: index)
-        bottomAnchors[index] = views[index].bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: vm.viewBottom)
-        NSLayoutConstraint.activate([views[index].widthAnchor.constraint(equalTo: view.widthAnchor, constant: -vm.viewLeading*2),
+        bottomAnchors[index] = views[index].bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: vm.btnBottom)
+        NSLayoutConstraint.activate([views[index].widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0),
                                      views[index].heightAnchor.constraint(equalToConstant: vm.buttonSize),
-                                     views[index].leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: vm.viewLeading),
+                                     views[index].leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
                                      bottomAnchors[index]])
     }
     
@@ -126,9 +118,9 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         btns[index].translatesAutoresizingMaskIntoConstraints = false
         var lead: CGFloat = 0
         if vm.fabDirection == .left{
-            lead = 0
+            lead = vm.btnLeftOrRightSpace
         }else{
-            lead = UIScreen.main.bounds.size.width-vm.viewLeading*2-vm.buttonSize
+            lead = UIScreen.main.bounds.size.width-vm.btnLeftOrRightSpace-vm.buttonSize
         }
         NSLayoutConstraint.activate([btns[index].widthAnchor.constraint(equalToConstant: vm.buttonSize),
                                      btns[index].heightAnchor.constraint(equalToConstant: vm.buttonSize),
@@ -152,10 +144,10 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         lbls[index].translatesAutoresizingMaskIntoConstraints = false
         var lblLeading: CGFloat = 55
         if vm.fabDirection == .left{
-            lblLeading = vm.buttonSize+5
+            lblLeading = vm.buttonSize+vm.btnLeftOrRightSpace+5
             lbls[index].textAlignment = .left
         }else{
-            lblLeading = -5
+            lblLeading = -5-vm.btnLeftOrRightSpace
             lbls[index].textAlignment = .right
         }
         NSLayoutConstraint.activate([lbls[index].centerYAnchor.constraint(equalTo: views[index].centerYAnchor, constant: 0),
@@ -230,7 +222,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         }
         
         for i in 1 ..< views.count{ //把button收回、隱藏字
-            bottomAnchors[i].constant = vm.viewBottom
+            bottomAnchors[i].constant = vm.btnBottom
             let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
             let to = [views[0].frame.midX,views[0].frame.midY]
             animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)

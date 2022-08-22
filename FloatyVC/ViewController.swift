@@ -9,6 +9,7 @@ import UIKit
 
 class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     let floatVC = FloatVC()
+    let vc2 = ViewController2()
     let viewModel = FloatVC.viewModel(
         fabDirection: .left
     )
@@ -17,6 +18,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
         super.viewDidLoad()
         self.view.backgroundColor = .systemGray2
         layout()
+        testLable()
         setFloatVC()
     }
     
@@ -44,6 +46,16 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
                                      button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: floatVC.getLeftLead()),
                                      button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: viewModel.viewBottom)])
     }
+    
+    func testLable(){
+        let testlable:UILabel = UILabel()
+        testlable.text = "測試測試測試"
+        testlable.textColor = .systemYellow
+        view.addSubview(testlable)
+        testlable.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([testlable.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                     testlable.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
+    }
 }
 
 extension ViewController {
@@ -63,5 +75,8 @@ extension ViewController {
     @IBAction func toLink (_ sender: UIButton){
         print("two Button Clicked")
         floatVC.collapseFAB()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+            present(vc2, animated: true, completion: nil)
+        }
     }
 }

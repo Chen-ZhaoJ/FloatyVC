@@ -18,6 +18,7 @@
 		DC188E7528AF39C10054198B /* FloatyVCUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E7428AF39C10054198B /* FloatyVCUITestsLaunchTests.swift */; };
 		DC188E8628AF71730054198B /* FloatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E8528AF71730054198B /* FloatVC.swift */; };
 		DC188E8828AF89D20054198B /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E8728AF89D20054198B /* Images.swift */; };
+		DC188E8C28B332110054198B /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC188E8B28B332110054198B /* ViewController2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		DC188E7428AF39C10054198B /* FloatyVCUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyVCUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		DC188E8528AF71730054198B /* FloatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatVC.swift; sourceTree = "<group>"; };
 		DC188E8728AF89D20054198B /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		DC188E8B28B332110054198B /* ViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				DC188E5128AF39BF0054198B /* AppDelegate.swift */,
 				DC188E5328AF39BF0054198B /* SceneDelegate.swift */,
 				DC188E5528AF39BF0054198B /* ViewController.swift */,
+				DC188E8B28B332110054198B /* ViewController2.swift */,
 				DC188E8528AF71730054198B /* FloatVC.swift */,
 				DC188E5728AF39BF0054198B /* Main.storyboard */,
 				DC188E5A28AF39C10054198B /* Assets.xcassets */,
@@ -269,6 +272,7 @@
 				DC188E8828AF89D20054198B /* Images.swift in Sources */,
 				DC188E8628AF71730054198B /* FloatVC.swift in Sources */,
 				DC188E5428AF39BF0054198B /* SceneDelegate.swift in Sources */,
+				DC188E8C28B332110054198B /* ViewController2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

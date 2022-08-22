@@ -19,10 +19,10 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
         self.view.backgroundColor = .systemGray2
         layout()
         testLable()
-        setFloatVC()
+        createFloatVC()
     }
     
-    func setFloatVC(){
+    func createFloatVC(){
         floatVC.createCloseButton(initVM: viewModel, image: .img_close, color: .black)
         floatVC.createOtherButton(image: .img_message, title: "none", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
         floatVC.createOtherButton(image: .img_link, title: "collapseFAB", color: .yellow, target: #selector(toLink(_:)), atVC: self)
@@ -30,10 +30,9 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     
     lazy var button: UIButton = {
         let btn = UIButton()
-        btn.setTitle("show", for: .normal)
+        btn.setImage(.img_add, for: .normal)
         btn.layer.cornerRadius = 25
-        btn.backgroundColor = .black
-        btn.setTitleColor(UIColor.white, for: .normal)
+        btn.backgroundColor = .yellow
         btn.addTarget(self, action: #selector(showFloatVC(_:)), for: .touchUpInside)
         return btn
     }()
@@ -64,18 +63,15 @@ extension ViewController {
         present(floatVC, animated: false)
     }
     
-    @objc func backThisVC(){
-        floatVC.collapseFAB()
-    }
-    
     @IBAction func sendMessage (_ sender: UIButton){
         print("one Button Clicked")
+        floatVC.present(vc2, animated: true)
     }
     
     @IBAction func toLink (_ sender: UIButton){
         print("two Button Clicked")
         floatVC.collapseFAB()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             present(vc2, animated: true, completion: nil)
         }
     }

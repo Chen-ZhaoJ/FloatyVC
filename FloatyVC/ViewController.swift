@@ -9,9 +9,7 @@ import UIKit
 
 class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     let vc2 = ViewController2()
-
     let viewModel = FloatVC.ViewModel()
-    
     let floatVC = FloatVC(initVM: FloatVC.ViewModel(
         fabDirection: .left,
         btnLeftOrRightSpace: 40,

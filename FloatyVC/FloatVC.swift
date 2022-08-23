@@ -201,9 +201,10 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     }
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        if isExpand == false {
-            self.dismiss(animated: false)
-        }
+        guard isExpand == false else { return }
+//        guard let key = views[views.count-1].layer.animationKeys() else { return }
+//        guard key[0] == "animPosition"  else { return }
+        self.dismiss(animated: false)
     }
     
     private func animationRotate(duration: Double, toValue: Double, repeatCount: Float, btn: UIButton){ //旋轉動畫
@@ -224,6 +225,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         animPosition.fillMode = CAMediaTimingFillMode.forwards
         animPosition.fromValue = fromValue
         animPosition.toValue = toValue
-        views[index].layer.add(animPosition, forKey: nil)
+//        animPosition.setValue("animPosition", forKey: "animPosition")
+        views[index].layer.add(animPosition, forKey: "animPosition")
     }
 }

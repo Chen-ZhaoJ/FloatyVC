@@ -25,7 +25,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     }
     
     func createFloatVC(){
-        floatVC.createCloseButton(initVM: ViewModel, image: .img_close, color: .black)
+        floatVC.createCloseButton(initVM: viewModel, image: .img_close, color: .black)
         floatVC.createOtherButton(image: .img_message, title: "none", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
         floatVC.createOtherButton(image: .img_link, title: "collapseFAB", color: .yellow, target: #selector(toLink(_:)), atVC: self)
     }

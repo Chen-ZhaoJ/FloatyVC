@@ -12,7 +12,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         case left
         case right
     }
-    struct viewModel{
+    struct ViewModel{
         var fabDirection: FabDirection = .left
         var btnLeftOrRightSpace: CGFloat = 0
         var btnBottom: CGFloat = 0
@@ -27,7 +27,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         var positionCollapseDuration: Double = 0.3
         var IntervalOfButtons: CGFloat = 5
     }
-    private var vm = viewModel()
+    private var vm = ViewModel()
     private var isExpand: Bool = false
     private var views: [UIView] = []
     private var btns: [UIButton] = []
@@ -35,7 +35,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     private var bottomAnchors: [NSLayoutConstraint] = []
     private let customMaskView: UIView = UIView()
     
-    func createCloseButton(initVM: viewModel, image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
+    func createCloseButton(initVM: ViewModel, image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
         guard views.count == 0 else {
             print("add another TopButton: Initialize another FloatVC with a different variable name")
             print("add other buttons that are not the top: Use createOtherButton")

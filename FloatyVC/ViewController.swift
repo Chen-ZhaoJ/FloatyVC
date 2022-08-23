@@ -8,13 +8,15 @@
 import UIKit
 
 class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
-    let floatVC = FloatVC()
     let vc2 = ViewController2()
-    let viewModel = FloatVC.ViewModel(
-        fabDirection: .right,
+
+    let viewModel = FloatVC.ViewModel()
+    
+    let floatVC = FloatVC(initVM: FloatVC.ViewModel(
+        fabDirection: .left,
         btnLeftOrRightSpace: 40,
         btnBottom: -50
-    )
+    )) ?? FloatVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +27,9 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     }
     
     func createFloatVC(){
-        floatVC.createCloseButton(initVM: viewModel, image: .img_close, color: .black)
-        floatVC.createOtherButton(image: .img_message, title: "none", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
-        floatVC.createOtherButton(image: .img_link, title: "collapseFAB", color: .yellow, target: #selector(toLink(_:)), atVC: self)
+        floatVC.createFAB(image: .img_close, color: .black)
+        floatVC.createFAB(image: .img_message, title: "none", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
+        floatVC.createFAB(image: .img_link, title: "collapseFAB", color: .yellow, target: #selector(toLink(_:)), atVC: self)
     }
     
     lazy var button: UIButton = {
@@ -44,7 +46,7 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([button.widthAnchor.constraint(equalToConstant: viewModel.buttonSize),
                                      button.heightAnchor.constraint(equalToConstant: viewModel.buttonSize),
-                                     button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+                                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
                                      button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)])
     }
     

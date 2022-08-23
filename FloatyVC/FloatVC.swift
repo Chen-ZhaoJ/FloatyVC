@@ -25,7 +25,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         var rotateCollapseDuration: Double = 0.3
         var positionExpandDuration: Double = 0.3
         var positionCollapseDuration: Double = 0.3
-        var IntervalOfButtons: CGFloat = 5
+        var intervalOfButtons: CGFloat = 5
     }
     private var vm = ViewModel()
     private var isExpand: Bool = false
@@ -35,12 +35,16 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     private var bottomAnchors: [NSLayoutConstraint] = []
     private let customMaskView: UIView = UIView()
     
-    func createCloseButton(initVM: ViewModel, image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
-        guard views.count == 0 else {
-            print("add another TopButton: Initialize another FloatVC with a different variable name")
-            print("add other buttons that are not the top: Use createOtherButton")
-            return
-        }
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    convenience init?(initVM: ViewModel){
+        self.init()
         vm.fabDirection = initVM.fabDirection
         vm.btnLeftOrRightSpace = initVM.btnLeftOrRightSpace
         vm.btnBottom = initVM.btnBottom
@@ -51,18 +55,28 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         vm.maskColor = initVM.maskColor
         vm.rotateExpandDuration = initVM.rotateExpandDuration
         vm.rotateCollapseDuration = initVM.rotateCollapseDuration
-        vm.IntervalOfButtons = initVM.IntervalOfButtons
-        
-        createView(index: 0)
-        createLabel(index: 0, title: title ?? "")
-        createButton(image: image, index: 0, color: color,target: target, atVC: atVC)
+        vm.intervalOfButtons = initVM.intervalOfButtons
     }
     
-    func createOtherButton(image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
-        guard views.count>0 else {
-            print("must createTopButton first")
-            return
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .clear
+        initialMask()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard isExpand == false else { return }
+        expand()
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self.view) else { return }
+        guard !btns[0].frame.contains(location) else { return }
+        collapse()
+    }
+    
+    func createFAB(image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
         let index = views.count
         createView(index: index)
         createLabel(index: index, title: title ?? "")
@@ -161,9 +175,9 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         
         for i in 1 ..< views.count{ //顯示字、把button展開
             lbls[i].isHidden = false
-            bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)
+            bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)
             let from = [views[0].frame.midX,views[0].frame.midY]
-            let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
+            let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
             animationPosition(duration: vm.positionExpandDuration, fromValue: from, toValue: to, index: i)
         }
         isExpand = !isExpand
@@ -178,7 +192,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         
         for i in 1 ..< views.count{ //把button收回、隱藏字
             bottomAnchors[i].constant = vm.btnBottom
-            let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.IntervalOfButtons)]
+            let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
             let to = [views[0].frame.midX,views[0].frame.midY]
             animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
             lbls[i].isHidden = true
@@ -211,25 +225,5 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         animPosition.fromValue = fromValue
         animPosition.toValue = toValue
         views[index].layer.add(animPosition, forKey: nil)
-    }
-        
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self.view) else { return }
-        guard !btns[0].frame.contains(location) && isExpand == true else { return } //位置不在FAB且FAB為展開時
-        collapse()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = .clear
-        initialMask()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        guard btns.count > 0 else {
-            print("must add button on FloatVC first")
-            return
-        }
-        expand()
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FloatVC: UIViewController, CAAnimationDelegate{
+public final class FloatVC: UIViewController, CAAnimationDelegate{
     enum FabDirection {
         case left
         case right
@@ -58,32 +58,32 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         vm.intervalOfButtons = initVM.intervalOfButtons
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
         initialMask()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard isExpand == false else { return }
         expand()
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: view) else { return }
         guard !btns[0].frame.contains(location) else { return }
         collapse()
     }
     
-    func createFAB(image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
+    public func createFAB(image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
         let index = views.count
         createView(index: index)
         createLabel(index: index, title: title ?? "")
         createButton(image: image, index: index, color: color,target: target, atVC: atVC)
     }
         
-    func collapseFAB(){
+    public func collapseFAB(){
         guard isExpand == true else { return }
         collapse()
     }
@@ -230,7 +230,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         views[index].layer.add(animPosition, forKey: nil)
     }
     
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+    public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         guard isExpand == false else { return }
         guard let key = anim.value(forKey: "id") as? String else { return }
         guard key == "animPosition" else { return }

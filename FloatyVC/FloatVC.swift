@@ -71,7 +71,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self.view) else { return }
+        guard let location = touches.first?.location(in: view) else { return }
         guard !btns[0].frame.contains(location) else { return }
         collapse()
     }

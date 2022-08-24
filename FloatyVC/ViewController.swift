@@ -67,7 +67,10 @@ extension ViewController {
     
     @IBAction func sendMessage (_ sender: UIButton){
         print("one Button Clicked")
-        floatVC.present(vc2, animated: true)
+        floatVC.collapseFAB()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [self] in
+            navigationController?.pushViewController(vc2, animated: true)
+        }
     }
     
     @IBAction func toLink (_ sender: UIButton){

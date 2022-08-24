@@ -91,69 +91,74 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     private func createView(index: Int){
         let myView: UIView = UIView()
         views.insert(myView, at: index)
+        let vi = views[index]
 
         if index != 0 {
-            view.insertSubview(views[index], belowSubview: views[index-1])
+            view.insertSubview(vi, belowSubview: views[index-1])
         }else{
-            view.insertSubview(views[index], at: 1)
+            view.insertSubview(vi, at: 1)
         }
-        views[index].translatesAutoresizingMaskIntoConstraints = false
+        vi.translatesAutoresizingMaskIntoConstraints = false
         let bottomConstraint: NSLayoutConstraint = NSLayoutConstraint()
         bottomAnchors.insert(bottomConstraint, at: index)
-        bottomAnchors[index] = views[index].bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: vm.btnBottom)
-        NSLayoutConstraint.activate([views[index].widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0),
-                                     views[index].heightAnchor.constraint(equalToConstant: vm.buttonSize),
-                                     views[index].leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+        bottomAnchors[index] = vi.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: vm.btnBottom)
+        NSLayoutConstraint.activate([vi.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0),
+                                     vi.heightAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     vi.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
                                      bottomAnchors[index]])
     }
     
     private func createButton(image: UIImage, index: Int, color: UIColor, target: Selector?, atVC: Any?){
         let button: UIButton = UIButton()
+        let bi = btns[index]
+        let vi = views[index]
         btns.insert(button, at: index)
-        btns[index].setImage(image, for: .normal)
-        btns[index].layer.cornerRadius = 25
-        btns[index].backgroundColor = color
+        bi.setImage(image, for: .normal)
+        bi.layer.cornerRadius = 25
+        bi.backgroundColor = color
         
-        views[index].addSubview(btns[index])
-        btns[index].translatesAutoresizingMaskIntoConstraints = false
+        vi.addSubview(bi)
+        bi.translatesAutoresizingMaskIntoConstraints = false
         var lead: CGFloat = 0
         if vm.fabDirection == .left{
             lead = vm.btnLeftOrRightSpace
         }else{
             lead = UIScreen.main.bounds.size.width-vm.btnLeftOrRightSpace-vm.buttonSize
         }
-        NSLayoutConstraint.activate([btns[index].widthAnchor.constraint(equalToConstant: vm.buttonSize),
-                                     btns[index].heightAnchor.constraint(equalToConstant: vm.buttonSize),
-                                     btns[index].leadingAnchor.constraint(equalTo: views[index].leadingAnchor, constant: lead),
-                                     btns[index].bottomAnchor.constraint(equalTo: views[index].bottomAnchor, constant: 0)])
+        NSLayoutConstraint.activate([bi.widthAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     bi.heightAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     bi.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: lead),
+                                     bi.bottomAnchor.constraint(equalTo: vi.bottomAnchor, constant: 0)])
         if index == 0 {
             btns[0].addTarget(self, action: #selector(collapse), for: UIControl.Event.touchUpInside)
         }
         guard target != nil else { return }
-        btns[index].addTarget(atVC, action: target ?? Selector(String()), for: UIControl.Event.touchUpInside)
+        bi.addTarget(atVC, action: target ?? Selector(String()), for: UIControl.Event.touchUpInside)
     }
     
     private func createLabel(index: Int, title: String){
         let label: UILabel = UILabel()
+        let li = lbls[index]
+        let vi = views[index]
         lbls.insert(label, at: index)
-        lbls[index].text = title
-        lbls[index].textColor = vm.lblTextColor
-        lbls[index].font = UIFont.systemFont(ofSize: vm.lblTextSize)
-        lbls[index].isHidden = true
+        li.text = title
+        li.textColor = vm.lblTextColor
+        li.font = UIFont.systemFont(ofSize: vm.lblTextSize)
+        li.isHidden = true
         
-        views[index].addSubview(lbls[index])
-        lbls[index].translatesAutoresizingMaskIntoConstraints = false
+        vi.addSubview(li)
+        li.translatesAutoresizingMaskIntoConstraints = false
         var lblLeading: CGFloat = 55
         if vm.fabDirection == .left{
             lblLeading = vm.buttonSize+vm.btnLeftOrRightSpace+5
-            lbls[index].textAlignment = .left
+            li.textAlignment = .left
         }else{
             lblLeading = -5-vm.btnLeftOrRightSpace
-            lbls[index].textAlignment = .right
+            li.textAlignment = .right
         }
-        NSLayoutConstraint.activate([lbls[index].centerYAnchor.constraint(equalTo: views[index].centerYAnchor, constant: 0),
-                                     lbls[index].widthAnchor.constraint(equalTo: views[index].widthAnchor, constant: -vm.buttonSize),
-                                     lbls[index].leadingAnchor.constraint(equalTo: views[index].leadingAnchor, constant: lblLeading)])
+        NSLayoutConstraint.activate([li.centerYAnchor.constraint(equalTo: vi.centerYAnchor, constant: 0),
+                                     li.widthAnchor.constraint(equalTo: vi.widthAnchor, constant: -vm.buttonSize),
+                                     li.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: lblLeading)])
     }
 
     private func initialMask(){
@@ -167,6 +172,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     }
     
     @objc private func expand(){
+        let v0 = views[0]
         if vm.fabDirection == .left {
             animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: 0.5, btn:btns[0]) //順時針轉
         }else{
@@ -176,14 +182,15 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         for i in 1 ..< views.count{ //顯示字、把button展開
             lbls[i].isHidden = false
             bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)
-            let from = [views[0].frame.midX,views[0].frame.midY]
-            let to = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
+            let from = [v0.frame.midX,v0.frame.midY]
+            let to = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
             animationPosition(duration: vm.positionExpandDuration, fromValue: from, toValue: to, index: i)
         }
         isExpand = !isExpand
     }
     
     @objc private func collapse(){
+        let v0 = views[0]
         if vm.fabDirection == .left {
             animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: -0.5, btn:btns[0]) //逆時針轉
         }else{
@@ -192,8 +199,8 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         
         for i in 1 ..< views.count{ //把button收回、隱藏字
             bottomAnchors[i].constant = vm.btnBottom
-            let from = [views[0].frame.midX,views[0].frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
-            let to = [views[0].frame.midX,views[0].frame.midY]
+            let from = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
+            let to = [v0.frame.midX,v0.frame.midY]
             animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
             lbls[i].isHidden = true
         }
@@ -202,8 +209,8 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         guard isExpand == false else { return }
-//        guard let key = views[views.count-1].layer.animationKeys() else { return }
-//        guard key[0] == "animPosition"  else { return }
+        guard let key = anim.value(forKey: "id") as? String else { return }
+        guard key == "animPosition" else { return }
         self.dismiss(animated: false)
     }
     
@@ -220,12 +227,13 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     
     private func animationPosition(duration: Double, fromValue: [CGFloat], toValue: [CGFloat], index: Int){ //位移動畫
         let animPosition = CABasicAnimation(keyPath: "position")
+        animPosition.delegate = self
         animPosition.duration = duration
         animPosition.isRemovedOnCompletion = false
         animPosition.fillMode = CAMediaTimingFillMode.forwards
         animPosition.fromValue = fromValue
         animPosition.toValue = toValue
-//        animPosition.setValue("animPosition", forKey: "animPosition")
-        views[index].layer.add(animPosition, forKey: "animPosition")
+        animPosition.setValue("animPosition", forKey: "id")
+        views[index].layer.add(animPosition, forKey: nil)
     }
 }

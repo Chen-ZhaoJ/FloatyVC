@@ -26,8 +26,9 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     
     func createFloatVC(){
         floatVC.createFAB(image: .img_close, color: .black)
-        floatVC.createFAB(image: .img_message, title: "none", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
-        floatVC.createFAB(image: .img_link, title: "collapseFAB", color: .yellow, target: #selector(toLink(_:)), atVC: self)
+        floatVC.createFAB(image: .img_message, title: "push vc2", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
+        floatVC.createFAB(image: .img_link, title: "present vc2", color: .yellow, target: #selector(toLink(_:)), atVC: self)
+        floatVC.createFAB(image: .img_add, title: "no collapse", color: .yellow, target: #selector(none(_:)) , atVC: self)
     }
     
     lazy var button: UIButton = {
@@ -79,5 +80,9 @@ extension ViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
             present(vc2, animated: true, completion: nil)
         }
+    }
+
+    @IBAction func none (_ sender: UIButton){
+        print("three Button Clicked")
     }
 }

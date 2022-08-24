@@ -92,6 +92,7 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
         let myView: UIView = UIView()
         views.insert(myView, at: index)
         let vi = views[index]
+        
 
         if index != 0 {
             view.insertSubview(vi, belowSubview: views[index-1])

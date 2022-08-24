@@ -110,9 +110,9 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     
     private func createButton(image: UIImage, index: Int, color: UIColor, target: Selector?, atVC: Any?){
         let button: UIButton = UIButton()
+        btns.insert(button, at: index)
         let bi = btns[index]
         let vi = views[index]
-        btns.insert(button, at: index)
         bi.setImage(image, for: .normal)
         bi.layer.cornerRadius = 25
         bi.backgroundColor = color
@@ -138,9 +138,9 @@ final class FloatVC: UIViewController, CAAnimationDelegate{
     
     private func createLabel(index: Int, title: String){
         let label: UILabel = UILabel()
+        lbls.insert(label, at: index)
         let li = lbls[index]
         let vi = views[index]
-        lbls.insert(label, at: index)
         li.text = title
         li.textColor = vm.lblTextColor
         li.font = UIFont.systemFont(ofSize: vm.lblTextSize)

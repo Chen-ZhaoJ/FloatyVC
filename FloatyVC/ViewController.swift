@@ -10,11 +10,7 @@ import UIKit
 class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
     let vc2 = ViewController2()
     let viewModel = FloatVC.ViewModel()
-    let floatVC = FloatVC(initVM: FloatVC.ViewModel(
-        fabDirection: .left,
-        btnLeftOrRightSpace: 40,
-        btnBottom: -50
-    )) ?? FloatVC()
+    let floatVC = FloatVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +41,8 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([button.widthAnchor.constraint(equalToConstant: viewModel.buttonSize),
                                      button.heightAnchor.constraint(equalToConstant: viewModel.buttonSize),
-                                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
-                                     button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)])
+                                     button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+                                     button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)])
     }
     
     func testLable(){

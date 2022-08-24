@@ -8,7 +8,7 @@
 import UIKit
 
 public final class FloatVC: UIViewController, CAAnimationDelegate{
-    enum FabDirection {
+    public enum FabDirection {
         case left
         case right
     }
@@ -43,19 +43,17 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         super.init(coder: coder)
     }
     
-    convenience init?(initVM: ViewModel){
+    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 0, btnBottom: CGFloat = 0, buttonSize: CGFloat = 50, intervalOfButtons: CGFloat = 5, lblTextSize: Double = 20, lblTextColor: UIColor = UIColor.systemYellow, maskAlpha: CGFloat = 0.5, maskColor: UIColor = UIColor.black){
         self.init()
-        vm.fabDirection = initVM.fabDirection
-        vm.btnLeftOrRightSpace = initVM.btnLeftOrRightSpace
-        vm.btnBottom = initVM.btnBottom
-        vm.buttonSize = initVM.buttonSize
-        vm.lblTextSize = initVM.lblTextSize
-        vm.lblTextColor = initVM.lblTextColor
-        vm.maskAlpha = initVM.maskAlpha
-        vm.maskColor = initVM.maskColor
-        vm.rotateExpandDuration = initVM.rotateExpandDuration
-        vm.rotateCollapseDuration = initVM.rotateCollapseDuration
-        vm.intervalOfButtons = initVM.intervalOfButtons
+        vm.fabDirection = fabDirection
+        vm.btnLeftOrRightSpace = btnLeftOrRightSpace
+        vm.btnBottom = btnBottom
+        vm.buttonSize = buttonSize
+        vm.intervalOfButtons = intervalOfButtons
+        vm.lblTextSize = lblTextSize
+        vm.lblTextColor = lblTextColor
+        vm.maskAlpha = maskAlpha
+        vm.maskColor = maskColor
     }
     
     public override func viewDidLoad() {

@@ -7,10 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
+class ViewController: UIViewController{
     let vc2 = ViewController2()
     let viewModel = FloatVC.ViewModel()
-    let floatVC = FloatVC()
+    let floatVC = FloatVC(fabDirection: .right)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +58,6 @@ class ViewController: UIViewController, UIViewControllerTransitioningDelegate{
 
 extension ViewController {
     @IBAction func showFloatVC(_ sender: UIButton){
-        floatVC.modalPresentationStyle = .overFullScreen
         present(floatVC, animated: false)
     }
     

@@ -14,17 +14,13 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
     }
     struct ViewModel{
         var fabDirection: FabDirection = .left
-        var btnLeftOrRightSpace: CGFloat = 0
-        var btnBottom: CGFloat = 0
+        var btnLeftOrRightSpace: CGFloat = 30
+        var btnBottom: CGFloat = -40
         var buttonSize: CGFloat = 50
         var lblTextSize: Double = 20
         var lblTextColor: UIColor = UIColor.systemYellow
         var maskAlpha: CGFloat = 0.5
         var maskColor: UIColor = UIColor.black
-        var rotateExpandDuration: Double = 0.3
-        var rotateCollapseDuration: Double = 0.3
-        var positionExpandDuration: Double = 0.3
-        var positionCollapseDuration: Double = 0.3
         var intervalOfButtons: CGFloat = 5
     }
     private var vm = ViewModel()
@@ -43,7 +39,7 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         super.init(coder: coder)
     }
     
-    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 0, btnBottom: CGFloat = 0, buttonSize: CGFloat = 50, intervalOfButtons: CGFloat = 5, lblTextSize: Double = 20, lblTextColor: UIColor = UIColor.systemYellow, maskAlpha: CGFloat = 0.5, maskColor: UIColor = UIColor.black){
+    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 30, btnBottom: CGFloat = -40, buttonSize: CGFloat = 50, intervalOfButtons: CGFloat = 5, lblTextSize: Double = 20, lblTextColor: UIColor = UIColor.systemYellow, maskAlpha: CGFloat = 0.5, maskColor: UIColor = UIColor.black){
         self.init()
         vm.fabDirection = fabDirection
         vm.btnLeftOrRightSpace = btnLeftOrRightSpace
@@ -59,6 +55,7 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
+        modalPresentationStyle = .overFullScreen
         initialMask()
     }
     
@@ -172,9 +169,9 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
     @objc private func expand(){
         let v0 = views[0]
         if vm.fabDirection == .left {
-            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: 0.5, btn:btns[0]) //順時針轉
+            animationRotate(duration: 0.3, toValue: Double.pi, repeatCount: 1, btn:btns[0]) //順時針轉
         }else{
-            animationRotate(duration: vm.rotateExpandDuration, toValue: Double.pi, repeatCount: -0.5, btn:btns[0]) //順時針轉
+            animationRotate(duration: 0.3, toValue: Double.pi, repeatCount: -1, btn:btns[0]) //順時針轉
         }
         
         for i in 1 ..< views.count{ //顯示字、把button展開
@@ -182,7 +179,7 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
             bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)
             let from = [v0.frame.midX,v0.frame.midY]
             let to = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
-            animationPosition(duration: vm.positionExpandDuration, fromValue: from, toValue: to, index: i)
+            animationPosition(duration: 0.3, fromValue: from, toValue: to, index: i)
         }
         isExpand = !isExpand
     }
@@ -190,16 +187,16 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
     @objc private func collapse(){
         let v0 = views[0]
         if vm.fabDirection == .left {
-            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: -0.5, btn:btns[0]) //逆時針轉
+            animationRotate(duration: 0.3, toValue: 0, repeatCount: -1, btn:btns[0]) //逆時針轉
         }else{
-            animationRotate(duration: vm.rotateCollapseDuration, toValue: 0, repeatCount: 0.5, btn:btns[0]) //逆時針轉
+            animationRotate(duration: 0.3, toValue: 0, repeatCount: 1, btn:btns[0]) //逆時針轉
         }
         
         for i in 1 ..< views.count{ //把button收回、隱藏字
             bottomAnchors[i].constant = vm.btnBottom
             let from = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
             let to = [v0.frame.midX,v0.frame.midY]
-            animationPosition(duration: vm.positionCollapseDuration, fromValue: from, toValue: to, index: i)
+            animationPosition(duration: 0.3, fromValue: from, toValue: to, index: i)
             lbls[i].isHidden = true
         }
         isExpand = !isExpand

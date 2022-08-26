@@ -22,9 +22,9 @@ class ViewController: UIViewController{
     
     func createFloatVC(){
         floatVC.createFAB(image: .img_close, btnColor: .black)
-        floatVC.createFAB(image: .img_message, title: "push vc2", btnColor: .yellow, target: #selector(sendMessage(_:)), atVC: self)
-        floatVC.createFAB(image: .img_link, title: "present vc2", btnColor: .yellow, target: #selector(toLink(_:)), atVC: self)
-        floatVC.createFAB(image: .img_add, title: "no collapse", btnColor: .yellow, target: #selector(none(_:)) , atVC: self)
+        floatVC.createFAB(image: .img_message, title: "push vc2", btnColor: .yellow, lblColor: .yellow, target: #selector(sendMessage(_:)), atVC: self)
+        floatVC.createFAB(image: .img_link, title: "present vc2", btnColor: .yellow, lblColor: .yellow, target: #selector(toLink(_:)), atVC: self)
+        floatVC.createFAB(image: .img_add, title: "no collapse", btnColor: .yellow, lblColor: .yellow, target: #selector(none(_:)) , atVC: self)
     }
     
     lazy var button: UIButton = {
@@ -39,8 +39,8 @@ class ViewController: UIViewController{
     func layout(){
         self.view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([button.widthAnchor.constraint(equalToConstant: viewModel.buttonSize),
-                                     button.heightAnchor.constraint(equalToConstant: viewModel.buttonSize),
+        NSLayoutConstraint.activate([button.widthAnchor.constraint(equalToConstant: viewModel.btnSize),
+                                     button.heightAnchor.constraint(equalToConstant: viewModel.btnSize),
                                      button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
                                      button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)])
     }

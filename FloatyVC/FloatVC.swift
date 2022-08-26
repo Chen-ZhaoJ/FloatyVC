@@ -16,8 +16,8 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         var fabDirection: FabDirection = .left
         var btnLeftOrRightSpace: CGFloat = 30
         var btnBottom: CGFloat = -40
-        var intervalOfButtons: CGFloat = 5
-        var buttonSize: CGFloat = 50
+        var btnPadding: CGFloat = 5
+        var btnSize: CGFloat = 50
         var lblTextSize: Double = 20
     }
     private var vm = ViewModel()
@@ -36,13 +36,13 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         super.init(coder: coder)
     }
     
-    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 30, btnBottom: CGFloat = -40, intervalOfButtons: CGFloat = 5, buttonSize: CGFloat = 50, lblTextSize: Double = 20){
+    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 30, btnBottom: CGFloat = -40, btnPadding: CGFloat = 5, btnSize: CGFloat = 50, lblTextSize: Double = 20){
         self.init()
         vm.fabDirection = fabDirection
         vm.btnLeftOrRightSpace = btnLeftOrRightSpace
         vm.btnBottom = btnBottom
-        vm.intervalOfButtons = intervalOfButtons
-        vm.buttonSize = buttonSize
+        vm.btnPadding = btnPadding
+        vm.btnSize = btnSize
         vm.lblTextSize = lblTextSize
     }
     
@@ -92,7 +92,7 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         bottomAnchors.insert(bottomConstraint, at: index)
         bottomAnchors[index] = vi.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: vm.btnBottom)
         NSLayoutConstraint.activate([vi.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0),
-                                     vi.heightAnchor.constraint(equalToConstant: vm.buttonSize),
+                                     vi.heightAnchor.constraint(equalToConstant: vm.btnSize),
                                      vi.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
                                      bottomAnchors[index]])
     }
@@ -112,10 +112,10 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         if vm.fabDirection == .left{
             lead = vm.btnLeftOrRightSpace
         }else{
-            lead = UIScreen.main.bounds.size.width-vm.btnLeftOrRightSpace-vm.buttonSize
+            lead = UIScreen.main.bounds.size.width-vm.btnLeftOrRightSpace-vm.btnSize
         }
-        NSLayoutConstraint.activate([bi.widthAnchor.constraint(equalToConstant: vm.buttonSize),
-                                     bi.heightAnchor.constraint(equalToConstant: vm.buttonSize),
+        NSLayoutConstraint.activate([bi.widthAnchor.constraint(equalToConstant: vm.btnSize),
+                                     bi.heightAnchor.constraint(equalToConstant: vm.btnSize),
                                      bi.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: lead),
                                      bi.bottomAnchor.constraint(equalTo: vi.bottomAnchor, constant: 0)])
         if index == 0 {
@@ -139,14 +139,14 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         li.translatesAutoresizingMaskIntoConstraints = false
         var lblLeading: CGFloat = 55
         if vm.fabDirection == .left{
-            lblLeading = vm.buttonSize+vm.btnLeftOrRightSpace+5
+            lblLeading = vm.btnSize+vm.btnLeftOrRightSpace+5
             li.textAlignment = .left
         }else{
             lblLeading = -5-vm.btnLeftOrRightSpace
             li.textAlignment = .right
         }
         NSLayoutConstraint.activate([li.centerYAnchor.constraint(equalTo: vi.centerYAnchor, constant: 0),
-                                     li.widthAnchor.constraint(equalTo: vi.widthAnchor, constant: -vm.buttonSize),
+                                     li.widthAnchor.constraint(equalTo: vi.widthAnchor, constant: -vm.btnSize),
                                      li.leadingAnchor.constraint(equalTo: vi.leadingAnchor, constant: lblLeading)])
     }
 
@@ -170,9 +170,9 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         
         for i in 1 ..< views.count{ //顯示字、把button展開
             lbls[i].isHidden = false
-            bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)
+            bottomAnchors[i].constant = bottomAnchors[i].constant-CGFloat(i)*(btns[0].frame.width+vm.btnPadding)
             let from = [v0.frame.midX,v0.frame.midY]
-            let to = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
+            let to = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.btnPadding)]
             animationPosition(duration: 0.3, fromValue: from, toValue: to, index: i)
         }
         isExpand = !isExpand
@@ -188,7 +188,7 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         
         for i in 1 ..< views.count{ //把button收回、隱藏字
             bottomAnchors[i].constant = vm.btnBottom
-            let from = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.intervalOfButtons)]
+            let from = [v0.frame.midX,v0.frame.midY-CGFloat(i)*(btns[0].frame.width+vm.btnPadding)]
             let to = [v0.frame.midX,v0.frame.midY]
             animationPosition(duration: 0.3, fromValue: from, toValue: to, index: i)
             lbls[i].isHidden = true

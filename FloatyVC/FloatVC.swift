@@ -16,12 +16,9 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         var fabDirection: FabDirection = .left
         var btnLeftOrRightSpace: CGFloat = 30
         var btnBottom: CGFloat = -40
+        var intervalOfButtons: CGFloat = 5
         var buttonSize: CGFloat = 50
         var lblTextSize: Double = 20
-        var lblTextColor: UIColor = UIColor.systemYellow
-        var maskAlpha: CGFloat = 0.5
-        var maskColor: UIColor = UIColor.black
-        var intervalOfButtons: CGFloat = 5
     }
     private var vm = ViewModel()
     private var isExpand: Bool = false
@@ -39,17 +36,14 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         super.init(coder: coder)
     }
     
-    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 30, btnBottom: CGFloat = -40, buttonSize: CGFloat = 50, intervalOfButtons: CGFloat = 5, lblTextSize: Double = 20, lblTextColor: UIColor = UIColor.systemYellow, maskAlpha: CGFloat = 0.5, maskColor: UIColor = UIColor.black){
+    public convenience init(fabDirection: FabDirection = .left, btnLeftOrRightSpace: CGFloat = 30, btnBottom: CGFloat = -40, intervalOfButtons: CGFloat = 5, buttonSize: CGFloat = 50, lblTextSize: Double = 20){
         self.init()
         vm.fabDirection = fabDirection
         vm.btnLeftOrRightSpace = btnLeftOrRightSpace
         vm.btnBottom = btnBottom
-        vm.buttonSize = buttonSize
         vm.intervalOfButtons = intervalOfButtons
+        vm.buttonSize = buttonSize
         vm.lblTextSize = lblTextSize
-        vm.lblTextColor = lblTextColor
-        vm.maskAlpha = maskAlpha
-        vm.maskColor = maskColor
     }
     
     public override func viewDidLoad() {
@@ -71,11 +65,11 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         collapse()
     }
     
-    public func createFAB(image: UIImage, title: String? = nil, color: UIColor, target: Selector? = nil, atVC: Any? = nil){
+    public func createFAB(image: UIImage, title: String? = nil, btnColor: UIColor, lblColor: UIColor = .black, target: Selector? = nil, atVC: Any? = nil){
         let index = views.count
         createView(index: index)
-        createLabel(index: index, title: title ?? "")
-        createButton(image: image, index: index, color: color,target: target, atVC: atVC)
+        createLabel(index: index, color: lblColor, title: title ?? "")
+        createButton(image: image, index: index, color: btnColor,target: target, atVC: atVC)
     }
         
     public func collapseFAB(){
@@ -131,13 +125,13 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
         bi.addTarget(atVC, action: target ?? Selector(String()), for: UIControl.Event.touchUpInside)
     }
     
-    private func createLabel(index: Int, title: String){
+    private func createLabel(index: Int, color: UIColor, title: String){
         let label: UILabel = UILabel()
         lbls.insert(label, at: index)
         let li = lbls[index]
         let vi = views[index]
         li.text = title
-        li.textColor = vm.lblTextColor
+        li.textColor = color
         li.font = UIFont.systemFont(ofSize: vm.lblTextSize)
         li.isHidden = true
         
@@ -157,7 +151,7 @@ public final class FloatVC: UIViewController, CAAnimationDelegate{
     }
 
     private func initialMask(){
-        customMaskView.backgroundColor = vm.maskColor.withAlphaComponent(vm.maskAlpha)
+        customMaskView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.insertSubview(customMaskView, at: 0)
         customMaskView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([customMaskView.widthAnchor.constraint(equalTo: view.widthAnchor),

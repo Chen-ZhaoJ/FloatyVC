@@ -21,10 +21,10 @@ class ViewController: UIViewController{
     }
     
     func createFloatVC(){
-        floatVC.createFAB(image: .img_close, color: .black)
-        floatVC.createFAB(image: .img_message, title: "push vc2", color: .yellow, target: #selector(sendMessage(_:)), atVC: self)
-        floatVC.createFAB(image: .img_link, title: "present vc2", color: .yellow, target: #selector(toLink(_:)), atVC: self)
-        floatVC.createFAB(image: .img_add, title: "no collapse", color: .yellow, target: #selector(none(_:)) , atVC: self)
+        floatVC.createFAB(image: .img_close, btnColor: .black)
+        floatVC.createFAB(image: .img_message, title: "push vc2", btnColor: .yellow, target: #selector(sendMessage(_:)), atVC: self)
+        floatVC.createFAB(image: .img_link, title: "present vc2", btnColor: .yellow, target: #selector(toLink(_:)), atVC: self)
+        floatVC.createFAB(image: .img_add, title: "no collapse", btnColor: .yellow, target: #selector(none(_:)) , atVC: self)
     }
     
     lazy var button: UIButton = {
